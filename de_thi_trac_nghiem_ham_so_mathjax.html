@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Đề Thi Trắc Nghiệm Hàm Số</title>
+
+  <!-- MathJax -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      margin: 0;
+      padding: 20px;
+      color: #222;
+    }
+
+    h1 {
+      text-align: center;
+      color: #0b3d91;
+      margin-bottom: 30px;
+    }
+
+    .quiz-container {
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .question-box {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+
+    .question-title {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      color: #163c77;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .option {
+      background: #eef3ff;
+      border: 2px solid transparent;
+      border-radius: 10px;
+      padding: 12px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .option:hover {
+      background: #dfe9ff;
+    }
+
+    .correct {
+      background: #c8f7c5 !important;
+      border-color: #2e9d34 !important;
+      color: #155724;
+    }
+
+    .wrong {
+      background: #ffd6d6 !important;
+      border-color: #d62828 !important;
+      color: #7a0000;
+    }
+
+    .answer-box {
+      margin-top: 15px;
+      padding: 15px;
+      border-left: 5px solid #0b3d91;
+      background: #f1f5ff;
+      display: none;
+      border-radius: 8px;
+    }
+
+    .score-box {
+      position: sticky;
+      top: 10px;
+      background: #0b3d91;
+      color: white;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 18px;
+      color: #555;
+    }
+
+    @media (max-width: 700px) {
+      .options {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>ĐỀ THI TRẮC NGHIỆM HÀM SỐ</h1>
+
+  <div class="quiz-container">
+    <div class="score-box">
+      Điểm hiện tại: <span id="score">0</span> / 15
+    </div>
+
+    <div id="quiz"></div>
+
+    <div class="footer">
+      Hoàn thành bài thi để kiểm tra kiến thức về hàm số.
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "1. Miền xác định của hàm số $f(x)=\\dfrac{1}{x-2}$ là:",
+        options: [
+          "$\\mathbb{R}$",
+          "$\\mathbb{R} \\setminus \\{2\\}$",
+          "$x > 2$",
+          "$x < 2$"
+        ],
+        answer: 1,
+        explain: "Mẫu số phải khác 0 nên $x-2 \\ne 0 \\Rightarrow x \\ne 2$."
+      },
+      {
+        question: "2. Miền giá trị của hàm số $f(x)=x^2$ là:",
+        options: [
+          "$(-\\infty,+\\infty)$",
+          "$[0,+\\infty)$",
+          "$(-\\infty,0]$",
+          "$\\mathbb{R} \\setminus \\{0\\}$"
+        ],
+        answer: 1,
+        explain: "Vì $x^2 \\ge 0$ với mọi $x \\in \\mathbb{R}$."
+      },
+      {
+        question: "3. Hàm số nào sau đây là hàm chẵn?",
+        options: [
+          "$f(x)=x^3$",
+          "$f(x)=x+1$",
+          "$f(x)=x^2$",
+          "$f(x)=2x-5$"
+        ],
+        answer: 2,
+        explain: "Ta có $f(-x)=(-x)^2=x^2=f(x)$ nên là hàm chẵn."
+      },
+      {
+        question: "4. Hàm số nào sau đây là hàm lẻ?",
+        options: [
+          "$f(x)=x^3$",
+          "$f(x)=x^2+1$",
+          "$f(x)=x^4$",
+          "$f(x)=x^2+x$"
+        ],
+        answer: 0,
+        explain: "Ta có $f(-x)=(-x)^3=-x^3=-f(x)$."
+      },
+      {
+        question: "5. Miền xác định của hàm số $f(x)=\\sqrt{x-1}$ là:",
+        options: [
+          "$x > 1$",
+          "$x \\ge 1$",
+          "$x < 1$",
+          "$x \\le 1$"
+        ],
+        answer: 1,
+        explain: "Biểu thức trong căn phải không âm: $x-1 \\ge 0$."
+      },
+      {
+        question: "6. Miền giá trị của hàm số $f(x)=\\sqrt{x}$ là:",
+        options: [
+          "$(-\\infty,+\\infty)$",
+          "$(-\\infty,0]$",
+          "$[0,+\\infty)$",
+          "$[1,+\\infty)$"
+        ],
+        answer: 2,
+        explain: "Căn bậc hai luôn cho giá trị không âm."
+      },
+      {
+        question: "7. Đường thẳng đứng $x=2$ có phải là đồ thị của một hàm số không?",
+        options: [
+          "Có",
+          "Không",
+          "Chỉ khi y > 0",
+          "Chỉ khi y < 0"
+        ],
+        answer: 1,
+        explain: "Một giá trị x = 2 tương ứng với vô số giá trị y nên không phải hàm số."
+      },
+      {
+        question: "8. Đồ thị nào sau đây biểu diễn hàm số?",
+        options: [
+          "Đường tròn",
+          "Parabol $y=x^2$",
+          "Đường thẳng đứng",
+          "Hình elip"
+        ],
+        answer: 1,
+        explain: "Mỗi giá trị x chỉ có đúng một giá trị y tương ứng."
+      },
+      {
+        question: "9. Hàm số $f(x)=|x|$ là:",
+        options: [
+          "Hàm lẻ",
+          "Hàm chẵn",
+          "Không chẵn không lẻ",
+          "Vừa chẵn vừa lẻ"
+        ],
+        answer: 1,
+        explain: "Ta có $|-x|=|x|$ nên là hàm chẵn."
+      },
+      {
+        question: "10. Miền xác định của hàm số $f(x)=\\dfrac{1}{x^2-9}$ là:",
+        options: [
+          "$x \\ne 3$",
+          "$x \\ne -3$",
+          "$x \\ne \\pm3$",
+          "$x > 3$"
+        ],
+        answer: 2,
+        explain: "Mẫu số phải khác 0 nên $x^2-9 \\ne 0 \\Rightarrow x \\ne \\pm3$."
+      },
+      {
+        question: "11. Hàm số $f(x)=2x^3+1$ là:",
+        options: [
+          "Hàm chẵn",
+          "Hàm lẻ",
+          "Không chẵn không lẻ",
+          "Hàm hằng"
+        ],
+        answer: 2,
+        explain: "Do có thêm số 1 nên không thỏa điều kiện hàm chẵn hoặc hàm lẻ."
+      },
+      {
+        question: "12. Miền giá trị của hàm số $f(x)=-x^2$ là:",
+        options: [
+          "$[0,+\\infty)$",
+          "$(-\\infty,0]$",
+          "$\\mathbb{R}$",
+          "$(-\\infty,+\\infty)$"
+        ],
+        answer: 1,
+        explain: "Vì $-x^2 \\le 0$ với mọi x."
+      },
+      {
+        question: "13. Đồ thị của hàm số chẵn có tính chất gì?",
+        options: [
+          "Đối xứng qua trục Oy",
+          "Đối xứng qua gốc tọa độ",
+          "Đối xứng qua trục Ox",
+          "Không đối xứng"
+        ],
+        answer: 0,
+        explain: "Hàm chẵn có đồ thị đối xứng qua trục tung Oy."
+      },
+      {
+        question: "14. Hàm số nào sau đây không có miền xác định là toàn bộ $\\mathbb{R}$?",
+        options: [
+          "$f(x)=x^2+1$",
+          "$f(x)=3x-2$",
+          "$f(x)=\\sqrt{x}$",
+          "$f(x)=x^3$"
+        ],
+        answer: 2,
+        explain: "Hàm $\\sqrt{x}$ chỉ xác định khi $x \\ge 0$."
+      },
+      {
+        question: "15. Kiểm tra bằng đường thẳng đứng dùng để xác định điều gì?",
+        options: [
+          "Miền giá trị",
+          "Miền xác định",
+          "Một đường cong có phải đồ thị hàm số hay không",
+          "Tính liên tục"
+        ],
+        answer: 2,
+        explain: "Nếu mọi đường thẳng đứng cắt đồ thị tối đa 1 điểm thì đó là đồ thị hàm số."
+      }
+    ];
+
+    const quiz = document.getElementById('quiz');
+    const scoreEl = document.getElementById('score');
+    let score = 0;
+
+    questions.forEach((q, index) => {
+      const box = document.createElement('div');
+      box.className = 'question-box';
+
+      const title = document.createElement('div');
+      title.className = 'question-title';
+      title.innerHTML = q.question;
+
+      const optionsDiv = document.createElement('div');
+      optionsDiv.className = 'options';
+
+      const answerBox = document.createElement('div');
+      answerBox.className = 'answer-box';
+
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement('div');
+        btn.className = 'option';
+        btn.innerHTML = opt;
+
+        btn.addEventListener('click', () => {
+          if (optionsDiv.classList.contains('answered')) return;
+
+          optionsDiv.classList.add('answered');
+
+          const allOptions = optionsDiv.querySelectorAll('.option');
+
+          allOptions[q.answer].classList.add('correct');
+
+          if (i !== q.answer) {
+            btn.classList.add('wrong');
+          } else {
+            score++;
+            scoreEl.textContent = score;
+          }
+
+          answerBox.style.display = 'block';
+          answerBox.innerHTML = `
+            <b>Đáp án đúng:</b> ${q.options[q.answer]} <br><br>
+            <b>Giải thích:</b> ${q.explain}
+          `;
+
+          MathJax.typesetPromise();
+        });
+
+        optionsDiv.appendChild(btn);
+      });
+
+      box.appendChild(title);
+      box.appendChild(optionsDiv);
+      box.appendChild(answerBox);
+      quiz.appendChild(box);
+    });
+
+    MathJax.typesetPromise();
+  </script>
+
+</body>
+</html>
